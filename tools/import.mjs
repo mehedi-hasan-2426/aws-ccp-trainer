@@ -164,6 +164,9 @@ function findAny(text) {
 
 const NEGATIVE = /\b(not|except|never|neither)\b/i;
 
+// "What is X?" is asking about X, so the prompt outranks wording inside the options.
+const DEFINITIONAL = /^\s*(what is|what are|what does|which of the following (best )?describes)\b/i;
+
 function matchRule(text) {
   const corpus = text.toLowerCase();
   for (const rule of FALLBACK_TOPICS) {
@@ -251,6 +254,9 @@ function buildExplanation(question, correct, correctEntries, topic, subject) {
   const note = question.sourceNote
     .filter((line) => line && !BARE_URL.test(line))
     .join(" ")
+    .replace(/\s*Reference:\s*<?https?:\/\/\S+>?/gi, "")
+    .replace(/<(https?:\/\/[^>]+)>/g, "")
+    .replace(/\s{2,}/g, " ")
     .trim();
   if (note) parts.push(note);
 
@@ -261,14 +267,19 @@ function buildExplanation(question, correct, correctEntries, topic, subject) {
 function enrich(question) {
   const negative = NEGATIVE.test(question.prompt);
   const correct = question.options.filter((o) => question.answer.includes(o.key));
+  const subject = findEntry(question.prompt);
+  const definitional = Boolean(subject) && !negative && DEFINITIONAL.test(question.prompt);
+
+  const resolve = (option, isCorrect) =>
+    (definitional && isCorrect ? subject : findAny(option.text));
+
   const correctEntries = [];
   for (const option of correct) {
-    const entry = findAny(option.text);
+    const entry = resolve(option, true);
     if (entry && !correctEntries.includes(entry)) correctEntries.push(entry);
   }
 
   // When the options only describe an outcome, the service under test is named in the prompt.
-  const subject = findEntry(question.prompt);
   if (!correctEntries.length && subject && !negative) {
     correctEntries.push(subject);
   }
@@ -281,7 +292,7 @@ function enrich(question) {
   const notes = new Map();
 
   for (const option of correct) {
-    const entry = findAny(option.text);
+    const entry = resolve(option, true);
     if (entry && !described.has(entry)) {
       described.add(entry);
       notes.set(option.key, "Correct. " + describe(entry));

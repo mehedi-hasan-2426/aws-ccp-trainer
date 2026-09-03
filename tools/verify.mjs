@@ -34,6 +34,14 @@ check("required governance files exist", () => {
   return required.length + " files";
 });
 
+check("baseURL is absolute", () => {
+  const base = read("hugo.toml").match(/^baseURL\s*=\s*"([^"]+)"/m);
+  assert(base, "no baseURL in hugo.toml");
+  assert(/^https:\/\/[^/]+\//.test(base[1]),
+    "baseURL must be an absolute https URL or canonical links and the sitemap break");
+  return base[1];
+});
+
 check("upstream source is pinned to a commit", () => {
   const source = read("tools", "import.mjs");
   const pin = source.match(/UPSTREAM_COMMIT\s*=\s*"([0-9a-f]{40})"/);

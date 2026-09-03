@@ -152,10 +152,8 @@ glossary and re-running the import rather than by editing generated JSON.
 
 ## Licence
 
-MIT, see [LICENSE](LICENSE). Question data derives from an MIT-licensed project; see
-[NOTICE](NOTICE) for attribution. Upstream describes its sets as exam dumps, so treat
-them as revision material rather than a predictor of the real exam.
-
-Not affiliated with, endorsed by or sponsored by Amazon Web Services.
+MIT, see [LICENSE](LICENSE). Question data from [kananinirav/AWS-Certified-Cloud-Practitioner-Notes][upstream]
+(MIT), see [NOTICE](NOTICE). Upstream describes its sets as exam dumps, so treat them as
+revision material. Not affiliated with AWS.
 
 [upstream]: https://github.com/kananinirav/AWS-Certified-Cloud-Practitioner-Notes

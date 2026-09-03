@@ -11,6 +11,8 @@
 **A practice trainer for the AWS Certified Cloud Practitioner exam (CLF-C02)**
 that tells you *why* each option is right or wrong.
 
+### [Try it live at ccp.mehedihasanrahib.de](https://ccp.mehedihasanrahib.de)
+
 [![CI](https://github.com/mehedi-hasan-2426/aws-ccp-trainer/actions/workflows/ci.yml/badge.svg)](https://github.com/mehedi-hasan-2426/aws-ccp-trainer/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 ![Questions](https://img.shields.io/badge/questions-987-ff9900)
@@ -50,6 +52,9 @@ patches instances, and Organizations handles multi-account billing. One wrong an
 teaches you four services.
 
 ## Quick start
+
+The site is live at **[ccp.mehedihasanrahib.de](https://ccp.mehedihasanrahib.de)**. To run
+it yourself:
 
 ```sh
 git clone https://github.com/mehedi-hasan-2426/aws-ccp-trainer.git

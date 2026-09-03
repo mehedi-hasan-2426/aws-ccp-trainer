@@ -11,6 +11,8 @@ explains the correct option and identifies the services named in each distractor
 Everything runs in the browser. There is no backend, no account and no tracking. Your
 domain and session preferences are kept in `localStorage` and never leave the machine.
 
+The source is on [GitHub](https://github.com/mehedi-hasan-2426/aws-ccp-trainer).
+
 ## Where the questions come from
 
 Questions and answer keys are imported from

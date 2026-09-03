@@ -1,20 +1,53 @@
-# CLF-C02 Trainer
+<div align="center">
 
-**Practice the AWS Certified Cloud Practitioner exam in your browser, with an
-explanation behind every option.**
+<img src="docs/logo.svg" alt="Nimbus" width="104" height="104">
 
-987 questions across the four CLF-C02 domains. Answer, reveal, and see not just which
-option was right but what each service in the question actually does. Runs as a static
-site with no backend, no accounts and no tracking.
+# Nimbus
+
+<a href="https://github.com/mehedi-hasan-2426/aws-ccp-trainer">
+  <img src="https://readme-typing-svg.demolab.com/?font=JetBrains+Mono&weight=600&size=21&pause=1200&color=FF9900&center=true&vCenter=true&width=720&height=45&lines=987+questions+for+the+AWS+Cloud+Practitioner+exam;An+explanation+behind+every+option%2C+not+just+the+right+one;No+backend.+No+accounts.+No+tracking." alt="987 questions for the AWS Cloud Practitioner exam. An explanation behind every option, not just the right one. No backend, no accounts, no tracking.">
+</a>
+
+**A practice trainer for the AWS Certified Cloud Practitioner exam (CLF-C02)**
+that tells you *why* each option is right or wrong.
 
 [![CI](https://github.com/mehedi-hasan-2426/aws-ccp-trainer/actions/workflows/ci.yml/badge.svg)](https://github.com/mehedi-hasan-2426/aws-ccp-trainer/actions/workflows/ci.yml)
-![License](https://img.shields.io/badge/license-MIT-blue)
+[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 ![Questions](https://img.shields.io/badge/questions-987-ff9900)
+![Domains](https://img.shields.io/badge/domains-4-ff9900)
+
 ![Hugo](https://img.shields.io/badge/Hugo-0.146%2B-ff4088?logo=hugo&logoColor=white)
 ![Node](https://img.shields.io/badge/Node-20%2B-5FA04E?logo=nodedotjs&logoColor=white)
 ![Dependencies](https://img.shields.io/badge/runtime%20dependencies-0-brightgreen)
+![First paint](https://img.shields.io/badge/first%20paint-21%20KB-brightgreen)
+[![Security](https://img.shields.io/badge/security-17%20automated%20checks-success)](docs/threat-model.md)
 
-![The trainer with a revealed solution](docs/screenshot.png)
+<img src="docs/screenshot.png" alt="A revealed solution showing what every option does" width="820">
+
+</div>
+
+## Contents
+
+- [Why this exists](#why-this-exists)
+- [Quick start](#quick-start)
+- [Features](#features)
+- [How the question bank is built](#how-the-question-bank-is-built)
+- [Project structure](#project-structure)
+- [Deploying](#deploying)
+- [Security](#security)
+- [Contributing](#contributing)
+- [Licence](#licence)
+
+## Why this exists
+
+Most practice dumps tell you the answer is B. They rarely tell you what A, C and D
+actually were, which is where the learning is — the CLF-C02 exam is largely a test of
+whether you can tell similar AWS services apart.
+
+Nimbus attaches a definition to every option. Miss a question about AWS Artifact and
+you also find out that Certificate Manager renews TLS certificates, Systems Manager
+patches instances, and Organizations handles multi-account billing. One wrong answer
+teaches you four services.
 
 ## Quick start
 
@@ -28,35 +61,22 @@ npm run dev
 Web Server is available at http://localhost:1313/
 ```
 
-Open the URL, pick your domains, and start. No install step and no dependencies to
-fetch, because the question bank is committed and there are no runtime packages.
-
-Requires [Hugo extended](https://gohugo.io/installation/) 0.146+ and Node 20+.
+Nothing to install. The question bank is committed and there are no runtime
+dependencies. You need [Hugo extended](https://gohugo.io/installation/) 0.146+ and
+Node 20+.
 
 ## Features
 
-- **987 questions** covering Cloud Concepts, Security and Compliance, Cloud Technology
-  and Services, and Billing, Pricing and Support
-- **Explanations for every option**, not just the correct one, so a wrong guess still
-  teaches you what the distractor actually does
-- **Two modes** — study with instant feedback, or a 65-question scored exam simulation
-- **Domain filtering** with per-domain accuracy reporting at the end
-- **Review incorrect** replays only the questions you missed
-- **Keyboard driven** — `A`-`E` or `1`-`5` to answer, arrows to move, `Enter` to reveal
-- **21 KB first paint**, with domain files loaded on demand
-- **Zero runtime dependencies** and a strict Content Security Policy
-
-## Project structure
-
-```
-assets/            css and js, bundled and fingerprinted by Hugo
-content/           site pages
-docs/              threat model and screenshot
-layouts/           Hugo templates
-static/questions/  generated question bank, one file per domain plus an index
-tools/             import pipeline and security checks
-.github/workflows/ CI
-```
+|  | |
+| --- | --- |
+| **987 questions** | Across all four CLF-C02 domains, weighted as the real exam is |
+| **Every option explained** | Not just the correct one, so a wrong guess still teaches you something |
+| **Two modes** | Study with instant feedback, or a scored 65-question exam simulation |
+| **Domain filtering** | Drill one weak area, with per-domain accuracy reported at the end |
+| **Review incorrect** | Replays only what you missed |
+| **Keyboard driven** | `A`-`E` or `1`-`5` to answer, arrows to move, `Enter` to reveal |
+| **21 KB first paint** | Domain files load on demand behind a 0.7 KB index |
+| **Zero dependencies** | No runtime packages, strict CSP, no inline script or style |
 
 ## How the question bank is built
 
@@ -82,6 +102,18 @@ enriches what remains:
 Upstream supplies answer keys but almost no written explanations. That layer is
 generated here. To improve one, extend `tools/glossary.mjs` or `tools/descriptors.mjs`
 and re-run the import.
+
+## Project structure
+
+```
+assets/            css and js, bundled and fingerprinted by Hugo
+content/           site pages
+docs/              threat model, logo and screenshot
+layouts/           Hugo templates
+static/questions/  generated bank, one file per domain plus an index
+tools/             import pipeline and security checks
+.github/workflows/ CI
+```
 
 ## Deploying
 

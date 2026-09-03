@@ -302,6 +302,8 @@ legend {
 }
 
 .footer p { margin: 0 0 0.35rem; }
+.footer a { color: var(--text); text-decoration: underline; text-underline-offset: 2px; }
+.footer a:hover { color: var(--accent); }
 
 @media (max-width: 560px) {
   .btn--ghost { margin-left: 0; }

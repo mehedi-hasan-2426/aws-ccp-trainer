@@ -276,12 +276,14 @@ function renderSolution(question, entry) {
     return;
   }
 
+  const unanswered = entry.selected.size === 0;
+
   dom.verdict.textContent = entry.correct
     ? "Correct"
-    : entry.selected.size === 0
+    : unanswered
       ? "Answer: " + question.answer.join(", ").toUpperCase()
       : "Not quite \u2014 correct answer: " + question.answer.join(", ").toUpperCase();
-  dom.verdict.className = entry.correct ? "ok" : "bad";
+  dom.verdict.className = entry.correct ? "ok" : unanswered ? "" : "bad";
 
   dom.explanation.textContent = question.explanation;
 

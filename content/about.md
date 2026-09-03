@@ -4,9 +4,9 @@ title: "About"
 
 ## What this is
 
-A practice trainer for the AWS Certified Cloud Practitioner exam (CLF-C02). Pick the
-domains you want to drill, answer questions, and reveal a breakdown that explains the
-correct option and identifies the services named in each distractor.
+Nimbus is a practice trainer for the AWS Certified Cloud Practitioner exam (CLF-C02).
+Pick the domains you want to drill, answer questions, and reveal a breakdown that
+explains the correct option and identifies the services named in each distractor.
 
 Everything runs in the browser. There is no backend, no account and no tracking. Your
 domain and session preferences are kept in `localStorage` and never leave the machine.

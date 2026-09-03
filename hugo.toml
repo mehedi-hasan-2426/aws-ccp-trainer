@@ -1,6 +1,6 @@
 baseURL = "/"
 languageCode = "en-us"
-title = "CLF-C02 Trainer"
+title = "Nimbus"
 enableRobotsTXT = true
 enableGitInfo = false
 disableKinds = ["taxonomy", "term", "rss"]
@@ -8,6 +8,7 @@ disableKinds = ["taxonomy", "term", "rss"]
 [params]
 examCode = "CLF-C02"
 examName = "AWS Certified Cloud Practitioner"
+tagline = "AWS Cloud Practitioner practice"
 
 # vercel.json repeats this with frame-ancestors appended, which a meta tag cannot
 # express. tools/verify.mjs asserts the two stay in step.

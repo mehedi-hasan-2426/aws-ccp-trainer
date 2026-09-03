@@ -1,0 +1,44 @@
+name: Bug report
+description: Something in the trainer does not work as expected
+labels: [bug]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What did you expect, and what happened instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Select the Security and Compliance domain
+        2. Start an exam session
+        3. Press Enter on the first question
+    validations:
+      required: true
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and version
+      placeholder: Firefox 141, Chrome 139
+    validations:
+      required: true
+
+  - type: input
+    id: question-id
+    attributes:
+      label: Question id
+      description: Shown in static/questions/ if the problem relates to a specific question
+      placeholder: q0412
+
+  - type: textarea
+    id: console
+    attributes:
+      label: Console output
+      description: Any errors from the browser console
+      render: text

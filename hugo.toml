@@ -1,0 +1,23 @@
+baseURL = "/"
+languageCode = "en-us"
+title = "CLF-C02 Trainer"
+enableRobotsTXT = true
+enableGitInfo = false
+disableKinds = ["taxonomy", "term", "rss"]
+
+[params]
+examCode = "CLF-C02"
+examName = "AWS Certified Cloud Practitioner"
+
+# vercel.json repeats this with frame-ancestors appended, which a meta tag cannot
+# express. tools/verify.mjs asserts the two stay in step.
+[params.security]
+csp = "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; font-src 'self'; base-uri 'none'; form-action 'none'"
+
+[minify]
+  [minify.tdewolff.html]
+  keepQuotes = true
+
+[markup]
+  [markup.goldmark.renderer]
+  unsafe = false

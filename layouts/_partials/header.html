@@ -1,0 +1,16 @@
+<header class="topbar">
+  <div class="shell topbar__inner">
+    <a class="brand" href="{{ "/" | relURL }}">
+      <span class="brand__mark">{{ site.Params.examCode }}</span>
+      <span class="brand__text">{{ site.Params.examName }}</span>
+    </a>
+    <nav class="topnav" aria-label="Main">
+      {{ range site.Sections }}
+        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+      {{ end }}
+      {{ range site.RegularPages }}
+        <a href="{{ .RelPermalink }}"{{ if $.IsPage }}{{ if eq .Permalink $.Permalink }} aria-current="page"{{ end }}{{ end }}>{{ .Title }}</a>
+      {{ end }}
+    </nav>
+  </div>
+</header>

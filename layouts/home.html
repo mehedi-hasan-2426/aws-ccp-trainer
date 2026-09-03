@@ -1,0 +1,83 @@
+{{ define "main" }}
+<section class="panel" id="setup" data-view>
+  <h1>Practice the {{ site.Params.examCode }} exam</h1>
+  <p class="lede">Pick the domains you want to drill, choose a session length, then answer. Every question can be revealed with a full breakdown of why each option is right or wrong.</p>
+
+  <form id="setup-form" novalidate>
+    <fieldset class="field">
+      <legend>Domains</legend>
+      <div class="domain-grid" id="domain-grid"></div>
+    </fieldset>
+
+    <fieldset class="field">
+      <legend>Session</legend>
+      <div class="radio-row">
+        <label><input type="radio" name="mode" value="study" checked> Study &mdash; every question, reveal as you go</label>
+        <label><input type="radio" name="mode" value="exam"> Exam simulation &mdash; 65 random questions, scored at the end</label>
+      </div>
+      <label class="check"><input type="checkbox" id="shuffle" checked> Shuffle question and option order</label>
+      <p class="hint">Reveal solution works in both modes. In exam simulation nothing is revealed unless you ask for it, and revealing locks that answer.</p>
+    </fieldset>
+
+    <button class="btn btn--primary" type="submit" id="start" disabled>Loading question bank&hellip;</button>
+    <p class="hint" id="bank-summary" role="status"></p>
+  </form>
+</section>
+
+<section class="panel" id="quiz" data-view hidden>
+  <div class="progress">
+    <div class="progress__bar"><span id="progress-fill"></span></div>
+    <div class="progress__meta">
+      <span id="progress-label"></span>
+      <span id="score-label"></span>
+    </div>
+  </div>
+
+  <article class="card" id="question-card">
+    <div class="card__tags">
+      <span class="tag tag--domain" id="q-domain"></span>
+      <span class="tag" id="q-topic"></span>
+      <span class="tag tag--type" id="q-type"></span>
+    </div>
+    <h2 class="card__prompt" id="q-prompt"></h2>
+    <ul class="options" id="q-options" role="group" aria-label="Answer options"></ul>
+  </article>
+
+  <div class="actions">
+    <button class="btn" type="button" id="prev">Previous</button>
+    <button class="btn btn--primary" type="button" id="reveal">Reveal solution</button>
+    <button class="btn" type="button" id="next">Next</button>
+    <button class="btn btn--ghost" type="button" id="finish">Finish session</button>
+  </div>
+
+  <section class="solution" id="solution" hidden>
+    <h3 id="verdict"></h3>
+    <div class="solution__body">
+      <p id="explanation"></p>
+      <ul class="breakdown" id="breakdown"></ul>
+      <p class="ref" id="reference" hidden></p>
+    </div>
+  </section>
+</section>
+
+<section class="panel" id="result" data-view hidden>
+  <h1>Session result</h1>
+  <p class="score" id="result-score"></p>
+  <table class="breakdown-table">
+    <caption>Accuracy per domain</caption>
+    <thead><tr><th scope="col">Domain</th><th scope="col">Correct</th><th scope="col">Asked</th><th scope="col">Rate</th></tr></thead>
+    <tbody id="result-rows"></tbody>
+  </table>
+  <div class="actions">
+    <button class="btn btn--primary" type="button" id="review-wrong">Review incorrect answers</button>
+    <button class="btn" type="button" id="restart">New session</button>
+  </div>
+</section>
+
+<p class="error" id="error" role="alert" hidden></p>
+{{ end }}
+
+{{ define "scripts" }}
+{{ $js := resources.Get "js/app.js" | js.Build (dict "minify" true "target" "es2019") | fingerprint }}
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
+{{ end }}

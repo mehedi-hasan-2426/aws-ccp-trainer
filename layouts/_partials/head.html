@@ -1,0 +1,10 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="{{ site.Params.security.csp }}">
+<meta name="referrer" content="no-referrer">
+<meta name="description" content="{{ with .Description }}{{ . }}{{ else }}Open practice trainer for the {{ site.Params.examName }} ({{ site.Params.examCode }}) exam.{{ end }}">
+<title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} &middot; {{ site.Title }}{{ end }}</title>
+<link rel="canonical" href="{{ .Permalink }}">
+{{ $css := resources.Get "css/main.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">

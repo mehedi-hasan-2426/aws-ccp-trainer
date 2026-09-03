@@ -1,0 +1,45 @@
+name: Question or explanation correction
+description: An answer key is wrong, or an explanation is misleading
+labels: [content]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Explanations are generated from a glossary, so a poor one is usually fixed by
+        improving `tools/glossary.mjs` rather than by editing the generated bank.
+
+  - type: input
+    id: question-id
+    attributes:
+      label: Question id
+      placeholder: q0412
+    validations:
+      required: true
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What is wrong
+      options:
+        - The marked answer is incorrect
+        - The explanation is misleading or wrong
+        - The domain or topic is misclassified
+        - An option has no explanation
+    validations:
+      required: true
+
+  - type: textarea
+    id: detail
+    attributes:
+      label: What it should say
+    validations:
+      required: true
+
+  - type: input
+    id: source
+    attributes:
+      label: Supporting AWS documentation
+      description: A link that backs up the correction
+      placeholder: https://docs.aws.amazon.com/...
+    validations:
+      required: true

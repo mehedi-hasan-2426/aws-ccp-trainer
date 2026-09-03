@@ -5,6 +5,12 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    # One PR for all actions. Split updates can leave codeql-action init and analyze
+    # on different versions, which fails the scan.
+    groups:
+      actions:
+        patterns:
+          - "*"
     commit-message:
       prefix: ci
     labels:

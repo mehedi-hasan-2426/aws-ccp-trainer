@@ -3,6 +3,23 @@
   <h1>Practice the {{ site.Params.examCode }} exam</h1>
   <p class="lede">Pick the domains you want to drill, choose a session length, then answer. Every question can be revealed with a full breakdown of why each option is right or wrong.</p>
 
+  <div class="resume" id="resume-banner" role="status" hidden>
+    <p id="resume-text"></p>
+    <div class="actions">
+      <button class="btn btn--primary" type="button" id="resume-continue">Resume session</button>
+      <button class="btn btn--ghost" type="button" id="resume-discard">Discard</button>
+    </div>
+  </div>
+
+  <div class="actions data-tools">
+    <button class="btn" type="button" id="export-progress">Export progress (.json)</button>
+    <label class="btn file-btn" for="import-progress">
+      Import progress
+      <input type="file" id="import-progress" accept="application/json" hidden>
+    </label>
+  </div>
+  <p class="hint">Progress lives only in this browser. Export a backup before clearing site data or switching devices.</p>
+
   <form id="setup-form" novalidate>
     <fieldset class="field">
       <legend>Domains</legend>

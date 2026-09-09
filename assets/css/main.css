@@ -92,6 +92,16 @@ h3 { font-size: 1rem; margin: 0 0 0.75rem; }
   background: var(--bg-raised);
 }
 
+.resume {
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  margin: 0 0 1.25rem;
+  background: var(--bg-raised);
+}
+
+.resume .actions { margin: 0.75rem 0 0; }
+
 legend {
   padding: 0 0.5rem;
   font-size: 0.75rem;
@@ -145,6 +155,10 @@ legend {
 }
 
 .btn--ghost { background: transparent; margin-left: auto; }
+
+.file-btn { display: inline-flex; align-items: center; }
+
+.data-tools { margin: 0 0 0.4rem; }
 
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 

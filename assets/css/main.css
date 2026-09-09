@@ -29,7 +29,7 @@ body {
 }
 
 .shell {
-  width: min(880px, 100% - 2.5rem);
+  width: min(1040px, 100% - 3rem);
   margin-inline: auto;
 }
 
@@ -42,15 +42,20 @@ body {
 }
 
 .topbar__inner {
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 1rem;
   min-height: 60px;
+  padding-inline: 1.5rem;
   flex-wrap: wrap;
 }
 
 .brand {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
@@ -83,6 +88,12 @@ h3 { font-size: 1rem; margin: 0 0 0.75rem; }
 
 .lede { color: var(--text-dim); max-width: 62ch; margin-bottom: 2rem; }
 .hint { color: var(--text-dim); font-size: 0.85rem; }
+
+.setup-grid { display: grid; gap: 1.25rem; }
+
+@media (min-width: 760px) {
+  .setup-grid { grid-template-columns: 1fr 1fr; align-items: start; }
+}
 
 .field {
   border: 1px solid var(--line);
@@ -208,7 +219,7 @@ legend {
 .tag--domain { border-color: var(--accent); color: var(--accent); }
 .tag--type { text-transform: uppercase; letter-spacing: 0.05em; }
 
-.card__prompt { margin: 0 0 1.25rem; font-weight: 600; }
+.card__prompt { margin: 0 0 1.25rem; font-weight: 600; max-width: 70ch; }
 
 .options { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
 
@@ -318,6 +329,11 @@ legend {
 .footer p { margin: 0 0 0.35rem; }
 .footer a { color: var(--text); text-decoration: underline; text-underline-offset: 2px; }
 .footer a:hover { color: var(--accent); }
+
+@media (max-width: 640px) {
+  .topbar__inner { justify-content: space-between; }
+  .brand { position: static; transform: none; }
+}
 
 @media (max-width: 560px) {
   .btn--ghost { margin-left: 0; }

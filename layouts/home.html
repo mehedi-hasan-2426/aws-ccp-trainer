@@ -21,20 +21,22 @@
   <p class="hint">Progress lives only in this browser. Export a backup before clearing site data or switching devices.</p>
 
   <form id="setup-form" novalidate>
-    <fieldset class="field">
-      <legend>Domains</legend>
-      <div class="domain-grid" id="domain-grid"></div>
-    </fieldset>
+    <div class="setup-grid">
+      <fieldset class="field">
+        <legend>Domains</legend>
+        <div class="domain-grid" id="domain-grid"></div>
+      </fieldset>
 
-    <fieldset class="field">
-      <legend>Session</legend>
-      <div class="radio-row">
-        <label><input type="radio" name="mode" value="study" checked> Study &mdash; every question, reveal as you go</label>
-        <label><input type="radio" name="mode" value="exam"> Exam simulation &mdash; 65 random questions, scored at the end</label>
-      </div>
-      <label class="check"><input type="checkbox" id="shuffle" checked> Shuffle question and option order</label>
-      <p class="hint">Reveal solution works in both modes. In exam simulation nothing is revealed unless you ask for it, and revealing locks that answer.</p>
-    </fieldset>
+      <fieldset class="field">
+        <legend>Session</legend>
+        <div class="radio-row">
+          <label><input type="radio" name="mode" value="study" checked> Study &mdash; every question, reveal as you go</label>
+          <label><input type="radio" name="mode" value="exam"> Exam simulation &mdash; 65 random questions, scored at the end</label>
+        </div>
+        <label class="check"><input type="checkbox" id="shuffle" checked> Shuffle question and option order</label>
+        <p class="hint">Reveal solution works in both modes. In exam simulation nothing is revealed unless you ask for it, and revealing locks that answer.</p>
+      </fieldset>
+    </div>
 
     <button class="btn btn--primary" type="submit" id="start" disabled>Loading question bank&hellip;</button>
     <p class="hint" id="bank-summary" role="status"></p>

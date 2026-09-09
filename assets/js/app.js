@@ -1,5 +1,6 @@
 const INDEX_URL = new URL("questions/index.json", document.baseURI).href;
 const PREFS_KEY = "clf-c02-trainer:prefs";
+const PROGRESS_KEY = "clf-c02-trainer:progress:v1";
 
 const el = (id) => document.getElementById(id);
 
@@ -35,6 +36,12 @@ const dom = {
   reviewWrong: el("review-wrong"),
   restart: el("restart"),
   error: el("error"),
+  resumeBanner: el("resume-banner"),
+  resumeText: el("resume-text"),
+  resumeContinue: el("resume-continue"),
+  resumeDiscard: el("resume-discard"),
+  exportProgress: el("export-progress"),
+  importProgress: el("import-progress"),
 };
 
 const state = {
@@ -44,6 +51,7 @@ const state = {
   cursor: 0,
   progress: new Map(),
   mode: "study",
+  config: null,
 };
 
 function randomInt(bound) {
@@ -108,6 +116,124 @@ function savePrefs(prefs) {
   } catch (err) {
     /* storage unavailable, session still works */
   }
+}
+
+// Everything below stays on this device: only question ids, chosen option
+// keys, and session settings are stored, never anything that identifies a person.
+function loadProgressSnapshot() {
+  try {
+    const raw = localStorage.getItem(PROGRESS_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!parsed || parsed.version !== 1 || !Array.isArray(parsed.spec) || !parsed.spec.length) return null;
+    return parsed;
+  } catch (err) {
+    return null;
+  }
+}
+
+function saveProgressSnapshot() {
+  if (!state.session.length) return;
+  try {
+    const snapshot = {
+      version: 1,
+      config: state.config,
+      mode: state.mode,
+      cursor: state.cursor,
+      spec: state.session.map((q) => ({ id: q.id, domain: q.domain, order: q.options.map((o) => o.from) })),
+      progress: Array.from(state.progress.entries()).map(([id, entry]) => [
+        id,
+        { selected: Array.from(entry.selected), revealed: entry.revealed, correct: entry.correct },
+      ]),
+    };
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(snapshot));
+  } catch (err) {
+    // Quota errors are the only ones worth a trace; the session still works without persistence.
+    if (err && err.name === "QuotaExceededError") console.warn("Could not save progress: storage quota exceeded.");
+  }
+}
+
+function clearProgressSnapshot() {
+  try {
+    localStorage.removeItem(PROGRESS_KEY);
+  } catch (err) {
+    /* ignore */
+  }
+}
+
+// Lets a learner move their progress between browsers or restore it after clearing site data,
+// without ever sending it anywhere: the file never leaves their machine unless they share it.
+function exportProgress() {
+  const raw = localStorage.getItem(PROGRESS_KEY);
+  if (!raw) {
+    fail("There is no saved progress to export yet.");
+    return;
+  }
+  const blob = new Blob([raw], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "nimbus-progress.json";
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+async function importProgress(file) {
+  let parsed;
+  try {
+    parsed = JSON.parse(await file.text());
+  } catch (err) {
+    fail("That file is not valid progress JSON.");
+    return;
+  }
+
+  if (!parsed || parsed.version !== 1 || !Array.isArray(parsed.spec) || !parsed.spec.length) {
+    fail("That file does not match the expected progress format.");
+    return;
+  }
+
+  localStorage.setItem(PROGRESS_KEY, JSON.stringify(parsed));
+  dom.error.hidden = true;
+  dom.resumeBanner.hidden = true;
+  offerResume();
+}
+
+// Rebuilds the exact same relabelled question the session showed, from the stored option order.
+function relabelFromOrder(question, order) {
+  const byKey = new Map(question.options.map((o) => [o.key, o]));
+  const ordered = order.map((key) => byKey.get(key)).filter(Boolean);
+  if (ordered.length !== question.options.length) return relabel(question, false);
+
+  const keys = "abcdefgh";
+  const options = ordered.map((option, i) => ({ ...option, key: keys[i], from: option.key }));
+  return {
+    ...question,
+    options,
+    answer: options.filter((o) => question.answer.includes(o.from)).map((o) => o.key),
+  };
+}
+
+async function restoreSession(snapshot) {
+  const domains = Array.from(new Set(snapshot.spec.map((s) => s.domain)));
+  await loadDomains(domains);
+
+  const session = [];
+  for (const spec of snapshot.spec) {
+    const pool = state.loaded.get(spec.domain) || [];
+    const question = pool.find((q) => q.id === spec.id);
+    if (!question) return false;
+    session.push(relabelFromOrder(question, spec.order));
+  }
+
+  state.session = session;
+  state.cursor = Math.min(Math.max(snapshot.cursor, 0), session.length - 1);
+  state.mode = snapshot.mode;
+  state.config = snapshot.config;
+  state.progress = new Map(snapshot.progress.map(([id, entry]) => [
+    id,
+    { selected: new Set(entry.selected), revealed: Boolean(entry.revealed), correct: Boolean(entry.correct) },
+  ]));
+  return true;
 }
 
 function showView(name) {
@@ -190,6 +316,7 @@ function buildSession(config) {
   state.session = pool.map((question) => relabel(question, config.shuffle));
   state.cursor = 0;
   state.mode = config.mode;
+  state.config = config;
   state.progress = new Map();
 }
 
@@ -340,6 +467,8 @@ function render() {
   dom.next.textContent = state.cursor === total - 1 ? "See result" : "Next";
   dom.reveal.disabled = entry.revealed;
   dom.reveal.textContent = entry.revealed ? "Revealed" : "Reveal solution";
+
+  saveProgressSnapshot();
 }
 
 function toggleOption(key) {
@@ -406,6 +535,8 @@ function missedIn(list) {
 }
 
 function finish() {
+  clearProgressSnapshot();
+
   const reviewed = graded();
   const total = reviewed.length;
   const correct = reviewed.filter((question) => {
@@ -521,6 +652,42 @@ async function loadDomains(names) {
   }));
 }
 
+function describeResume(snapshot) {
+  const total = snapshot.spec.length;
+  const answeredCount = snapshot.progress.filter(([, entry]) => entry.selected.length > 0).length;
+  const modeLabel = snapshot.mode === "exam" ? "Exam simulation" : "Study session";
+  return modeLabel + " in progress \u2014 question " + (snapshot.cursor + 1) + " of " + total
+    + ", " + answeredCount + " answered.";
+}
+
+function offerResume() {
+  const snapshot = loadProgressSnapshot();
+  if (!snapshot) return;
+
+  dom.resumeText.textContent = describeResume(snapshot);
+  dom.resumeBanner.hidden = false;
+
+  dom.resumeContinue.addEventListener("click", async () => {
+    dom.resumeContinue.disabled = true;
+    const ok = await restoreSession(snapshot).catch(() => false);
+    dom.resumeBanner.hidden = true;
+
+    if (!ok) {
+      clearProgressSnapshot();
+      fail("Saved progress no longer matches the question bank. Start a new session.");
+      return;
+    }
+
+    showView("quiz");
+    render();
+  }, { once: true });
+
+  dom.resumeDiscard.addEventListener("click", () => {
+    clearProgressSnapshot();
+    dom.resumeBanner.hidden = true;
+  }, { once: true });
+}
+
 async function onSubmit(event) {
   event.preventDefault();
   const config = readConfig();
@@ -572,6 +739,14 @@ async function init() {
 
   state.bank = payload;
   renderDomains();
+  offerResume();
+
+  dom.exportProgress.addEventListener("click", exportProgress);
+  dom.importProgress.addEventListener("change", () => {
+    const file = dom.importProgress.files[0];
+    dom.importProgress.value = "";
+    if (file) importProgress(file);
+  });
 
   dom.form.addEventListener("submit", onSubmit);
   dom.prev.addEventListener("click", () => move(-1));

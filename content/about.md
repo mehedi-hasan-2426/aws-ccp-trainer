@@ -9,7 +9,10 @@ Pick the domains you want to drill, answer questions, and reveal a breakdown tha
 explains the correct option and identifies the services named in each distractor.
 
 Everything runs in the browser. There is no backend, no account and no tracking. Your
-domain and session preferences are kept in `localStorage` and never leave the machine.
+domain and session preferences, plus in-progress answers, are kept in `localStorage` and
+never leave the machine. Nothing is collected to store that data: no name, email or
+sign-in of any kind. Use "Export progress" to save a backup file, and "Import progress"
+to bring it back on another browser or after clearing site data.
 
 The source is on [GitHub](https://github.com/mehedi-hasan-2426/aws-ccp-trainer).
 

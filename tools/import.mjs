@@ -66,6 +66,12 @@ function sync() {
   return head;
 }
 
+// Derived from the pinned commit rather than wall-clock time, so re-running the
+// import on a different day does not produce a spurious diff in index.json.
+function commitDate(hash) {
+  return git(["show", "-s", "--format=%cd", "--date=short", hash]);
+}
+
 function parseAnswerKeys(raw) {
   const segment = raw.trim().replace(/[.*_`]/g, "").trim();
   if (/^[A-E]([\s,]+[A-E])*$/i.test(segment)) {
@@ -412,7 +418,7 @@ function main() {
     exam: "CLF-C02",
     passingScore: 700,
     examQuestionCount: 65,
-    generated: new Date().toISOString().slice(0, 10),
+    generated: commitDate(commit),
     attribution: {
       source: "kananinirav/AWS-Certified-Cloud-Practitioner-Notes",
       url: "https://github.com/kananinirav/AWS-Certified-Cloud-Practitioner-Notes",

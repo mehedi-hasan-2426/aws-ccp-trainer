@@ -20,14 +20,18 @@ The source is on [GitHub](https://github.com/mehedi-hasan-2426/aws-ccp-trainer).
 
 Questions and answer keys are imported from
 [kananinirav/AWS-Certified-Cloud-Practitioner-Notes](https://github.com/kananinirav/AWS-Certified-Cloud-Practitioner-Notes),
-which is published under the MIT licence. That project describes its practice sets as
-exam dumps, so treat them as revision material rather than as a predictor of the real
-exam.
+which is published under the MIT licence. I did not write them, and they are not official
+AWS material. That project describes its practice sets as exam dumps. I cannot verify
+where each question originally came from, and AWS certification rules forbid using
+leaked exam content, so use Nimbus to learn what the services do rather than to memorise
+answers.
 
 The upstream data contains questions, options and correct answers, but almost no written
 explanations. This project adds that layer: an importer maps every option against a
 glossary of AWS services and cloud concepts, then assigns each question to one of the four
 CLF-C02 exam domains and generates the explanation text you see when you reveal a solution.
+Because the text is generated rather than written per question, some explanations are
+generic and a few may be wrong. Check the AWS documentation when something looks off.
 
 ## Regenerating the bank
 

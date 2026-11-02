@@ -10,7 +10,8 @@
     "verify:negative": "node tools/verify-negative.mjs",
     "dev": "hugo server --disableFastRender",
     "build": "hugo --minify --gc --cleanDestinationDir",
-    "test": "node tools/verify.mjs && node tools/verify-negative.mjs"
+    "test:unit": "node --test tools/app.test.mjs",
+    "test": "npm run test:unit && node tools/verify.mjs && node tools/verify-negative.mjs"
   },
   "engines": {
     "node": ">=20"

@@ -97,6 +97,9 @@ Node 20+.
 | **21 KB first paint** | Domain files load on demand behind a 0.7 KB index |
 | **Zero dependencies** | No runtime packages, strict CSP, no inline script or style |
 
+Revealing a solution locks that question's answers for both mouse and keyboard.
+Unrevealed exam answers can still be changed before revealing or finishing.
+
 ## How the question bank is built
 
 The bank is generated, not hand-maintained.

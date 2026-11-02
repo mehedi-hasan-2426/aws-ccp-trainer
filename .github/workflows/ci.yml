@@ -42,6 +42,9 @@ jobs:
           sudo install -m 0755 hugo /usr/local/bin/hugo
           hugo version
 
+      - name: Quiz behavior tests
+        run: npm run test:unit
+
       - name: Security checks
         run: npm run verify
 

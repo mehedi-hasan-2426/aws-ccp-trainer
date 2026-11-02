@@ -474,6 +474,7 @@ function render() {
 function toggleOption(key) {
   const question = current();
   const entry = entryFor(question);
+  if (entry.revealed) return;
 
   if (question.multi) {
     if (entry.selected.has(key)) {

@@ -6,7 +6,7 @@ Thanks for taking a look. This is a small project, so the process is light.
 
 ```sh
 npm run dev      # http://localhost:1313
-npm test         # security checks and mutation tests
+npm test         # quiz behavior, security checks and mutation tests
 npm run build    # production build into ./public
 ```
 

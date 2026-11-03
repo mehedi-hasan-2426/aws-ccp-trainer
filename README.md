@@ -161,6 +161,15 @@ Both run in CI alongside CodeQL and secret scanning, with actions pinned by comm
 See [SECURITY.md](SECURITY.md) for reporting and [docs/threat-model.md](docs/threat-model.md)
 for the analysis.
 
+## Dependency updates
+
+[Renovate](renovate.json) requires the [GitHub App](https://github.com/apps/renovate)
+to be installed for this repository. It replaces Dependabot version updates and its
+auto-merge workflow, not vulnerability alerts or existing security scans. Routine
+updates are grouped by manager before 06:00 Monday, Europe/Berlin, with a three-day
+release-age delay. Vulnerability PRs bypass that delay and schedule. All updates
+need manual review and passing checks; major upgrades first need Dashboard approval.
+
 ## Contributing
 
 Issues and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md). The short
